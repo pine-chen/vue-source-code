@@ -21,9 +21,10 @@ const methodsToPatch = [
 
 /**
  * Intercept mutating methods and emit events
+ * 数组方法拦截器
  */
 methodsToPatch.forEach(function (method) {
-  // cache original method
+  // cache original method 缓存原始方法
   const original = arrayProto[method]
   def(arrayMethods, method, function mutator(...args) {
     const result = original.apply(this, args)

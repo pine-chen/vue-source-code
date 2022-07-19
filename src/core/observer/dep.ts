@@ -28,6 +28,7 @@ export default class Dep {
     this.subs = []
   }
 
+  // 收集依赖
   addSub(sub: DepTarget) {
     this.subs.push(sub)
   }
@@ -48,6 +49,7 @@ export default class Dep {
     }
   }
 
+  // 循环通知触发依赖
   notify(info?: DebuggerEventExtraInfo) {
     // stabilize the subscriber list first
     const subs = this.subs.slice()

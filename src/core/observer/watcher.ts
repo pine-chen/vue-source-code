@@ -101,6 +101,7 @@ export default class Watcher implements DepTarget {
     this.expression = __DEV__ ? expOrFn.toString() : ''
     // parse expression for getter
     if (isFunction(expOrFn)) {
+      // 读取值后触发get依赖
       this.getter = expOrFn
     } else {
       this.getter = parsePath(expOrFn)

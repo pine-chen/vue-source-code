@@ -45,6 +45,7 @@ const mockDep = {
  * object. Once attached, the observer converts the target
  * object's property keys into getter/setters that
  * collect dependencies and dispatch updates.
+ * Observer类会附加到每个被观察的Object上，附加后，Observer会讲Object的所以属性转化为getter/setter的形式来收集属性依赖，并当属性变化时通知依赖
  */
 export class Observer {
   dep: Dep
@@ -54,14 +55,18 @@ export class Observer {
     // this.value = value
     this.dep = mock ? mockDep : new Dep()
     this.vmCount = 0
+    // value新增__ob__属性拿到Observer实例，所有被侦测变化的数据都有这个属性
     def(value, '__ob__', this)
     if (isArray(value)) {
       if (!mock) {
+        // 判断浏览器是否支持_proto_属性
         if (hasProto) {
           /* eslint-disable no-proto */
+          // 覆盖原型方法
           ;(value as any).__proto__ = arrayMethods
           /* eslint-enable no-proto */
         } else {
+          // 将拦截器方法挂载上去
           for (let i = 0, l = arrayKeys.length; i < l; i++) {
             const key = arrayKeys[i]
             def(value, key, arrayMethods[key])
@@ -76,6 +81,7 @@ export class Observer {
        * Walk through all properties and convert them into
        * getter/setters. This method should only be called when
        * value type is Object.
+       * 将每个属性转化为getter/setter侦听变化，只在数据类型在Object时调用
        */
       const keys = Object.keys(value)
       for (let i = 0; i < keys.length; i++) {
@@ -87,6 +93,7 @@ export class Observer {
 
   /**
    * Observe a list of Array items.
+   * 观察数组所有子元素的变化
    */
   observeArray(value: any[]) {
     for (let i = 0, l = value.length; i < l; i++) {
@@ -100,7 +107,8 @@ export class Observer {
 /**
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
- * or the existing observer if the value already has one.
+ * or the existing observer if the value already has one
+ * 尝试为value创建一个Observer实例，创建成功则返回实例，如果已经存在实例则直接返回它
  */
 export function observe(
   value: any,
@@ -154,6 +162,7 @@ export function defineReactive(
   }
 
   let childOb = !shallow && observe(val, false, mock)
+  // 封装Object.defineProperty，get收集依赖到Dep中，set触发依赖， array在getter中收集依赖，拦截器中触发依赖
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
