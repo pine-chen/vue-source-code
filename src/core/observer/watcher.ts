@@ -154,6 +154,7 @@ export default class Watcher implements DepTarget {
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
+      // 判断当前watcher是否订阅了Dep
       if (!this.depIds.has(id)) {
         dep.addSub(this)
       }
@@ -251,6 +252,7 @@ export default class Watcher implements DepTarget {
 
   /**
    * Remove self from all dependencies' subscriber list.
+   * 从所有的依赖项的Dep列表中将自己删除
    */
   teardown() {
     if (this.vm && !this.vm._isBeingDestroyed) {

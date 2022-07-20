@@ -25,6 +25,7 @@ function _traverse(val: any, seen: SimpleSet) {
   ) {
     return
   }
+  // 确保不会重复收集依赖
   if (val.__ob__) {
     const depId = val.__ob__.dep.id
     if (seen.has(depId)) {
@@ -36,6 +37,7 @@ function _traverse(val: any, seen: SimpleSet) {
     i = val.length
     while (i--) _traverse(val[i], seen)
   } else {
+    // 对象取key，递归子值触发收集依赖
     keys = Object.keys(val)
     i = keys.length
     while (i--) _traverse(val[keys[i]], seen)

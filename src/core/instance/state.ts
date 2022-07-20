@@ -380,6 +380,7 @@ export function stateMixin(Vue: typeof Component) {
       invokeWithErrorHandling(cb, vm, [watcher.value], vm, info)
       popTarget()
     }
+    // 取消观察数据
     return function unwatchFn() {
       watcher.teardown()
     }

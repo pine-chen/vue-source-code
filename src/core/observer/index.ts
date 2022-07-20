@@ -259,6 +259,7 @@ export function set(
     target[key] = val
     return val
   }
+  // (target as any)._isVue判断是不是vue实例，ob && ob.vmCount判断是不是根数据（this.$data）对象
   if ((target as any)._isVue || (ob && ob.vmCount)) {
     __DEV__ &&
       warn(
@@ -267,10 +268,12 @@ export function set(
       )
     return val
   }
+  // 不是响应式数据
   if (!ob) {
     target[key] = val
     return val
   }
+  // 将响应式数据转化为getter/setter的形式
   defineReactive(ob.value, key, val, undefined, ob.shallow, ob.mock)
   if (__DEV__) {
     ob.dep.notify({
@@ -315,10 +318,12 @@ export function del(target: any[] | object, key: any) {
       warn(`Delete operation on key "${key}" failed: target is readonly.`)
     return
   }
+  // key不是target自身属性 return
   if (!hasOwn(target, key)) {
     return
   }
   delete target[key]
+  // 判断target是不是响应式数据，响应式数据发送通知
   if (!ob) {
     return
   }
