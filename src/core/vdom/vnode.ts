@@ -6,17 +6,17 @@ import type { VNodeComponentOptions, VNodeData } from 'types/vnode'
  * @internal
  */
 export default class VNode {
-  tag?: string
-  data: VNodeData | undefined
-  children?: Array<VNode> | null
-  text?: string
-  elm: Node | undefined
+  tag?: string // 元素节点的名称
+  data: VNodeData | undefined // 节点相关数据，例如attr，class，style
+  children?: Array<VNode> | null // 子节点
+  text?: string // 文本节点的文本
+  elm: Node | undefined // 原生节点元素
   ns?: string
-  context?: Component // rendered in this component's scope
+  context?: Component // rendered in this component's scope 指当前的Vue实例
   key: string | number | undefined
-  componentOptions?: VNodeComponentOptions
-  componentInstance?: Component // component instance
-  parent: VNode | undefined | null // component placeholder node
+  componentOptions?: VNodeComponentOptions // VNode对象如果是组件，componentOptions保存组件tag、propsData和children等信息
+  componentInstance?: Component // component instance VNode对象如果是组件，componentInstance保存相对应的Vue实例
+  parent: VNode | undefined | null // component placeholder Node对象如果是一个自定义组件，是在父组件中的vnode
 
   // strictly internal
   raw: boolean // contains raw HTML? (server only)
