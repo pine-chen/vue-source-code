@@ -27,9 +27,12 @@ methodsToPatch.forEach(function (method) {
   // cache original method 缓存原始方法
   const original = arrayProto[method]
   def(arrayMethods, method, function mutator(...args) {
+    // 缓存原始方法
     const result = original.apply(this, args)
+    // 获取 Observer 实例
     const ob = this.__ob__
     let inserted
+    // 如果是新增则取出新增元素存入 inserted，并转化为 Observer 响应式
     switch (method) {
       case 'push':
       case 'unshift':
@@ -48,6 +51,7 @@ methodsToPatch.forEach(function (method) {
         key: method
       })
     } else {
+      // 向依赖 Watcher 发送消息
       ob.dep.notify()
     }
     return result

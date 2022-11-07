@@ -44,10 +44,10 @@ export function createElement(
 }
 
 export function _createElement(
-  context: Component,
-  tag?: string | Component | Function | Object,
-  data?: VNodeData,
-  children?: any,
+  context: Component, // vnode执行上下文环境 component类型
+  tag?: string | Component | Function | Object, // 标签，可以是字符串或者component
+  data?: VNodeData, // vnode的数据，VNodeData类型
+  children?: any, // 当前vnode的子节点
   normalizationType?: number
 ): VNode | Array<VNode> {
   if (isDef(data) && isDef((data as any).__ob__)) {
@@ -104,6 +104,7 @@ export function _createElement(
           context
         )
       }
+      // 创建虚拟 vnode
       vnode = new VNode(
         config.parsePlatformTagName(tag),
         data,

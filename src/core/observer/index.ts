@@ -108,7 +108,7 @@ export class Observer {
  * Attempt to create an observer instance for a value,
  * returns the new observer if successfully observed,
  * or the existing observer if the value already has one
- * 尝试为value创建一个Observer实例，创建成功则返回实例，如果已经存在实例则直接返回它
+ * 尝试为value创建一个Observer实例，如果value是响应式数据，则直接返回它，不是则创建一个实例则返回实例
  */
 export function observe(
   value: any,
