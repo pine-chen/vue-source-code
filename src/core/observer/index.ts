@@ -247,7 +247,9 @@ export function set(
   }
   const ob = (target as any).__ob__
   if (isArray(target) && isValidArrayIndex(key)) {
+    // 如果索引值大于数组的 length，设置 length 等于索引值
     target.length = Math.max(target.length, key)
+    // 将 val 插入到指定 key 的位置
     target.splice(key, 1, val)
     // when mocking for SSR, array methods are not hijacked
     if (ob && !ob.shallow && ob.mock) {
@@ -255,6 +257,7 @@ export function set(
     }
     return val
   }
+  // 索引值 key 已经存在 target 中，属于修改
   if (key in target && !(key in Object.prototype)) {
     target[key] = val
     return val
@@ -301,6 +304,7 @@ export function del(target: any[] | object, key: any) {
     )
   }
   if (isArray(target) && isValidArrayIndex(key)) {
+    // 删除指定索引值 key 的属性
     target.splice(key, 1)
     return
   }

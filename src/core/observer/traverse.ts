@@ -8,6 +8,7 @@ const seenObjects = new Set()
  * Recursively traverse an object to evoke all converted
  * getters, so that every nested property inside the object
  * is collected as a "deep" dependency.
+ * val 如果不是 Array Object 或者已经被冻结的则直接返回
  */
 export function traverse(val: any) {
   _traverse(val, seenObjects)
@@ -25,7 +26,7 @@ function _traverse(val: any, seen: SimpleSet) {
   ) {
     return
   }
-  // 确保不会重复收集依赖
+  // 通过 dep.id 确保不会重复收集依赖
   if (val.__ob__) {
     const depId = val.__ob__.dep.id
     if (seen.has(depId)) {

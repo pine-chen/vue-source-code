@@ -33,6 +33,7 @@ export default class Dep {
     this.subs.push(sub)
   }
 
+  // 移除依赖
   removeSub(sub: DepTarget) {
     remove(this.subs, sub)
   }

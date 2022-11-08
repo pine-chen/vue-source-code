@@ -100,6 +100,7 @@ export default class Watcher implements DepTarget {
     this.newDepIds = new Set()
     this.expression = __DEV__ ? expOrFn.toString() : ''
     // parse expression for getter
+    // 如果 expOrFn 是函数，直接赋值给getter，否则用 parsePath 函数读取属性路径
     if (isFunction(expOrFn)) {
       // 读取值后触发get依赖
       this.getter = expOrFn
@@ -148,6 +149,7 @@ export default class Watcher implements DepTarget {
 
   /**
    * Add a dependency to this directive.
+   * 记录 watcher 订阅了那些 Dep
    */
   addDep(dep: Dep) {
     const id = dep.id
